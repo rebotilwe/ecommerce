@@ -1,0 +1,27 @@
+.my-orders {
+  padding: 40px 0;
+}
+
+.order-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.order-header {
+  margin-bottom: 10px;
+}
+
+.order-items-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.order-items-table th, .order-items-table td {
+  border: 1px solid #eee;
+  padding: 8px;
+  text-align: center;
+}

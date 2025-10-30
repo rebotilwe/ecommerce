@@ -1,0 +1,137 @@
+.hero-section {
+  width: 100%;
+  height: 90vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Gradient overlay and centering */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 123, 167, 0.35),
+    rgba(0, 167, 209, 0.45)
+  );
+  backdrop-filter: brightness(0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  transition: background 0.5s ease;
+}
+
+.hero-section:hover .hero-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 123, 167, 0.5),
+    rgba(0, 167, 209, 0.65)
+  );
+  backdrop-filter: brightness(0.7);
+}
+
+/* Centered content */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  color: #e0f7fa;
+  animation: fadeInUp 1s ease forwards;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 6px rgba(0, 41, 61, 0.7);
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  margin-bottom: 30px;
+  font-weight: 500;
+  text-shadow: 0 1px 4px rgba(0, 41, 61, 0.6);
+}
+
+.hero-btn {
+  background: linear-gradient(90deg, #00afd1 0%, #007ba7 100%);
+  border: none;
+  padding: 14px 40px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(0, 175, 209, 0.3);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  letter-spacing: 1.5px;
+}
+
+.hero-btn:hover {
+  background: linear-gradient(90deg, #007ba7 0%, #00afd1 100%);
+  box-shadow: 0 12px 24px rgba(0, 175, 209, 0.5);
+  transform: translateY(-3px);
+  color: #e0f7fa;
+}
+
+/* Floating droplet animation */
+.hero-droplet {
+  position: absolute;
+  bottom: 8%; /* ✅ near bottom center */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle at center, #00afd1 40%, transparent 90%);
+  border-radius: 50%;
+  animation: floatUpDown 3s ease-in-out infinite;
+  opacity: 0.6;
+  z-index: 2; /* ✅ above overlay, below text */
+}
+
+@keyframes floatUpDown {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-20px);
+  }
+}
+
+/* Fade in animation */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+  .hero-content p {
+    font-size: 1.1rem;
+  }
+  .hero-btn {
+    padding: 12px 30px;
+    font-size: 0.9rem;
+  }
+}

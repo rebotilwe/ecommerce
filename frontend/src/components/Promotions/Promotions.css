@@ -1,0 +1,71 @@
+.promotions {
+  padding: 70px 0;
+  background: #f9f9f9;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.promo-card {
+  color: #fff;
+  padding: 35px 25px;
+  border-radius: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 170px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.promo-card h3 {
+  font-size: 24px;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.promo-card p {
+  font-size: 17px;
+  font-weight: 500;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+.promo-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  filter: brightness(1.1);
+}
+
+/* Specific background colors can be kept or refined to gradient variants */
+.promo-card:nth-child(1) {
+  background: linear-gradient(135deg, #d3ad7f, #b38b55);
+}
+
+.promo-card:nth-child(2) {
+  background: linear-gradient(135deg, #b89161, #927143);
+}
+
+.promo-card:nth-child(3) {
+  background: linear-gradient(135deg, #f4c27f, #d8a257);
+}
+
+/* Responsive styling */
+@media(max-width: 768px) {
+  .promo-card h3 {
+    font-size: 20px;
+  }
+  .promo-card p {
+    font-size: 15px;
+  }
+}

@@ -1,0 +1,199 @@
+/* ----------------------------- */
+/* 🌊 TOPBAR SECTION STYLING     */
+/* ----------------------------- */
+.topbar {
+  background: #007ba7;
+  color: #e0f7fa;
+  font-size: 14px;
+  padding: 6px 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.topbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Left section — phone & email */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* 👈 adds space between phone number and email */
+}
+
+.topbar-left span {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* 👈 space between icon and text */
+}
+
+/* Right section — social icons + sign in button */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* 👈 adds spacing between icons */
+}
+
+/* Social icons style */
+.topbar-right a {
+  color: #e0f7fa;
+  font-size: 15px;
+  transition: color 0.3s ease;
+}
+
+.topbar-right a:hover {
+  color: #ffffff;
+}
+
+/* Sign In button styling */
+.auth-btn {
+  padding: 6px 16px; /* smaller and more balanced */
+  margin-left: 8px; /* 👈 separates it from the last icon */
+  border-radius: 30px;
+  background: linear-gradient(90deg, #00afd1 0%, #007ba7 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(0, 175, 209, 0.4);
+  transition: all 0.3s ease;
+}
+
+.auth-btn:hover {
+  background: linear-gradient(90deg, #007ba7 0%, #00afd1 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 123, 167, 0.5);
+  color: #e0f7fa;
+}
+
+/* ----------------------------- */
+/* 🧭 NAVBAR SECTION STYLING     */
+/* ----------------------------- */
+.navbar {
+  position: fixed;
+  top: 40px; /* 👈 moves navbar below topbar */
+  width: 100%;
+  background: rgba(0, 128, 160, 0.9); /* semi-transparent teal */
+  backdrop-filter: saturate(180%) blur(10px);
+  padding: 15px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s ease;
+}
+
+.navbar:hover {
+  background: rgba(0, 128, 160, 1);
+}
+
+/* Logo text */
+.logo-text {
+  font-size: 28px;
+  font-weight: 900;
+  color: #e0f7fa;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  text-shadow: 0 1px 3px rgba(0, 50, 70, 0.8);
+  transition: color 0.3s ease;
+}
+
+.logo-text:hover {
+  color: #ffffff;
+}
+
+/* Nav links */
+.navbar-nav {
+  display: flex;
+  gap: 30px;
+}
+
+.navbar-nav .nav-link {
+  color: #c0e8f8;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  letter-spacing: 1px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  background: #00afd1;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 175, 209, 0.6);
+  text-decoration: none;
+}
+
+/* Cart icon */
+.cart-icon {
+  position: relative;
+  font-size: 22px;
+  color: #e0f7fa;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.cart-icon:hover {
+  color: #ffffff;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #00afd1;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 3px 7px;
+  font-weight: 700;
+  box-shadow: 0 0 5px #00afd1;
+}
+
+/* ----------------------------- */
+/* 📱 Responsive Styles           */
+/* ----------------------------- */
+@media (max-width: 768px) {
+  .topbar {
+    font-size: 13px;
+    padding: 4px 0;
+  }
+
+  .topbar-left,
+  .topbar-right {
+    gap: 10px;
+  }
+
+  .auth-btn {
+    padding: 5px 12px;
+    font-size: 13px;
+  }
+
+  .navbar {
+    top: 35px;
+    padding: 10px 20px;
+  }
+
+  .navbar-nav {
+    gap: 15px;
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+
+  .logo-text {
+    font-size: 22px;
+  }
+}
