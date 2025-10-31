@@ -1,12 +1,12 @@
 // src/data/productsData.js
 
-import still1 from "../assets/images/food_1.jpeg";
-import still2 from "../assets/images/food_2.jpeg";
-import sparkling1 from "../assets/images/food_3.jpeg";
-import flavored1 from "../assets/images/food_4.jpeg";
-import sport1 from "../assets/images/food_5.jpeg";
-import refill1 from "../assets/images/food_5.jpeg";
-import dispenser1 from "../assets/images/food_6.jpeg";
+import still1 from "../assets/images/500ml-thirstiBottle.jpeg";
+import still2 from "../assets/images/stillWater.jpeg";
+import sparkling1 from "../assets/images/sparklingWater.jpeg";
+import flavored1 from "../assets/images/flavoredWater.jpeg";
+import sport1 from "../assets/images/sportrange.png"
+import refill1 from "../assets/images/refill-pack.jpeg";
+import dispenser1 from "../assets/images/dispenser.jpeg";
 
 export const products = [
   {

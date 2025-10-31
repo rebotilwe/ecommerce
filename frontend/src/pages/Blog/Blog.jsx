@@ -9,21 +9,21 @@ const blogPosts = [
     title: "The Benefits of Staying Hydrated",
     date: "October 20, 2025",
     excerpt: "Discover why drinking enough water daily improves your health, energy, and focus.",
-    image: "/src/assets/images/food_1.jpeg",
+    image: "/src/assets/images/hydration.jpg",
   },
   {
     id: 2,
     title: "How to Choose the Right Water Dispenser",
     date: "October 15, 2025",
     excerpt: "Learn the factors to consider when selecting a dispenser for home or office use.",
-    image: "/src/assets/images/food_7.jpeg",
+    image: "/src/assets/images/dispenser.jpeg",
   },
   {
     id: 3,
     title: "Top 5 Flavored Waters to Try",
     date: "October 10, 2025",
     excerpt: "A guide to our best-selling flavored waters to keep you refreshed and healthy.",
-    image: "/src/assets/images/Food_5.jpeg",
+    image: "/src/assets/images/flavored.jpeg",
   },
 ];
 

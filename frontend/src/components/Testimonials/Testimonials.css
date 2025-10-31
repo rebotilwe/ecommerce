@@ -1,9 +1,11 @@
 .testimonials {
   padding: 80px 20px;
-  background: #e6f7f9; /* soft aqua background */
+  background: #e6f7f9;
   text-align: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #03454e;
+  position: relative;
+  overflow: hidden;
 }
 
 .testimonials h2 {
@@ -16,25 +18,34 @@
   text-shadow: 1px 1px 4px rgba(0, 123, 167, 0.3);
 }
 
-.testimonial-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 40px;
+/* Horizontal scroll layout */
+.testimonial-scroll {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px;
   max-width: 1000px;
   margin: 0 auto;
 }
 
+.testimonial-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Card styling */
 .testimonial-card {
   background: white;
-  padding: 30px 30px 40px;
+  padding: 30px;
   border-radius: 15px;
   box-shadow: 0 10px 28px rgba(0, 123, 167, 0.1);
   font-style: italic;
   font-size: 18px;
   line-height: 1.6;
-  position: relative;
+  flex: 0 0 280px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: default;
+  position: relative;
 }
 
 .testimonial-card:hover {
@@ -53,6 +64,16 @@
   opacity: 0.15;
 }
 
+/* Customer image */
+.testimonial-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid #00a7d1;
+}
+
 .testimonial-card p {
   margin-bottom: 25px;
   color: #055c6b;
@@ -67,7 +88,38 @@
   color: #006680;
 }
 
-/* Responsive adjustments */
+/* Scroll Arrows */
+.scroll-btn {
+  position: absolute;
+  top: 55%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background: #00a7d1;
+  color: #fff;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  z-index: 10;
+}
+
+.scroll-btn:hover {
+  background: #007ba7;
+}
+
+.scroll-btn.left {
+  left: 10px;
+}
+
+.scroll-btn.right {
+  right: 10px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .testimonials h2 {
     font-size: 28px;
