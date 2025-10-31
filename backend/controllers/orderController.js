@@ -9,7 +9,8 @@ exports.checkout = (req, res) => {
     return res.status(400).json({ message: "Invalid checkout data" });
   }
 
-  // Insert order
+  const items = typeof cartItems === "string" ? JSON.parse(cartItems) : cartItems;
+
   const orderQuery =
     "INSERT INTO orders (user_id, total_amount, created_at) VALUES (?, ?, NOW())";
   db.query(orderQuery, [userId, totalAmount], (err, result) => {
@@ -17,13 +18,12 @@ exports.checkout = (req, res) => {
 
     const orderId = result.insertId;
 
-    // Insert order items
-    const orderItems = cartItems.map((item) => [
+    const orderItems = items.map((item) => [
       orderId,
-      item.product_id || item.id,
+      item.productId,
       item.size,
       item.quantity,
-      item.price,
+      Array.isArray(item.price) ? item.price[0] : item.price,
     ]);
 
     const itemQuery =
@@ -32,7 +32,7 @@ exports.checkout = (req, res) => {
       if (err2) return res.status(500).json({ message: err2.message });
 
       // Clear cart after successful checkout
-      const clearCartQuery = "DELETE FROM cart_items WHERE user_id = ?";
+      const clearCartQuery = "DELETE FROM cart WHERE userId = ?";
       db.query(clearCartQuery, [userId], (err3) => {
         if (err3) return res.status(500).json({ message: err3.message });
         res.json({ message: "Order placed successfully", orderId });
@@ -40,6 +40,7 @@ exports.checkout = (req, res) => {
     });
   });
 };
+
 // Get all orders for a user
 exports.getUserOrders = (req, res) => {
   const { userId } = req.params;

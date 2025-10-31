@@ -1,15 +1,15 @@
 // src/pages/Cart/Cart.jsx
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import { AuthContext } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Cart.css";
 import toast from "react-hot-toast";
 
 const Cart = () => {
-  const { cartItems, removeFromCart, clearCart } = useContext(CartContext);
+  const { cartItems, removeFromCart } = useContext(CartContext);
   const { isLoggedIn } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   if (!isLoggedIn) {
     return (
@@ -24,7 +24,7 @@ const Cart = () => {
     );
   }
 
-  // Helper function to get correct price
+  // Helper function to calculate price
   const getPrice = (item) => {
     if (Array.isArray(item.price)) {
       const idx = item.sizes?.indexOf(item.size) ?? 0;
@@ -37,31 +37,17 @@ const Cart = () => {
     return 0;
   };
 
-  // Total price
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + getPrice(item) * (item.quantity || 1),
     0
   );
 
-  // Checkout handler (example)
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (cartItems.length === 0) {
       toast.error("Your cart is empty!");
       return;
     }
-
-    try {
-      setLoading(true);
-      // Call your backend checkout endpoint here
-      // Example: await axios.post("/checkout", { cartItems, total: totalPrice })
-      toast.success("Proceeding to checkout...");
-      clearCart();
-    } catch (err) {
-      console.error(err);
-      toast.error("Error during checkout");
-    } finally {
-      setLoading(false);
-    }
+    navigate("/checkout");
   };
 
   return (
@@ -110,9 +96,7 @@ const Cart = () => {
                       <td>
                         <button
                           className="remove-btn"
-                          onClick={() =>
-                            removeFromCart(item.productId, item.size)
-                          }
+                          onClick={() => removeFromCart(item.productId, item.size)}
                         >
                           ✖
                         </button>
@@ -125,12 +109,8 @@ const Cart = () => {
 
             <div className="cart-footer">
               <h3 className="cart-total">Total: R{totalPrice.toFixed(2)}</h3>
-              <button
-                className="checkout-btn"
-                onClick={handleCheckout}
-                disabled={loading}
-              >
-                {loading ? "Processing..." : "Pay Now"}
+              <button className="checkout-btn" onClick={handleCheckout}>
+                Pay Now
               </button>
             </div>
           </>

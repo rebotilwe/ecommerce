@@ -7,6 +7,7 @@ import {
   FaTwitter,
   FaInstagram,
   FaShoppingCart,
+  FaUserCircle,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
@@ -38,6 +39,7 @@ const Navbar = () => {
               <FaEnvelope /> info@thirsti.co.za
             </span>
           </div>
+
           <div className="topbar-right">
             <a href="#"><FaFacebookF /></a>
             <a href="#"><FaTwitter /></a>
@@ -102,15 +104,32 @@ const Navbar = () => {
                 </Link>
               </li>
 
-              {/* ✅ Show Cart only if logged in */}
-              {user && (
-                <li className="nav-item">
-                  <Link className="nav-link cart-icon" to="/cart">
-                    <FaShoppingCart />
-                    <span className="cart-badge">{totalItems}</span>
-                  </Link>
-                </li>
-              )}
+            {/* ✅ Show these only if user is logged in */}
+{user && (
+  <>
+    <li className="nav-item">
+      <Link className="nav-link cart-icon" to="/cart">
+        <FaShoppingCart />
+        <span className="cart-badge">{totalItems}</span>
+      </Link>
+    </li>
+<li className="nav-item">
+  <Link className="nav-link profile-icon" to="/profile">
+    {user?.profile_image ? (
+      <img
+        src={`http://localhost:5000/uploads/${user.profile_image}`}
+        alt="Profile"
+        className="navbar-profile-img"
+      />
+    ) : (
+      <FaUserCircle size={23} />
+    )}
+  </Link>
+</li>
+
+  </>
+)}
+
             </ul>
           </div>
         </div>

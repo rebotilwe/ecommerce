@@ -160,6 +160,22 @@
   box-shadow: 0 0 5px #00afd1;
 }
 
+.navbar-profile-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #00a7d1;
+  margin-left: 5px;
+  transition: transform 0.2s ease;
+}
+
+
+.navbar-profile-img:hover {
+  transform: scale(1.05);
+}
+
+
 /* ----------------------------- */
 /* 📱 Responsive Styles           */
 /* ----------------------------- */

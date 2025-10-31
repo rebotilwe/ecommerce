@@ -12,6 +12,7 @@ import Cart from './pages/Cart/Cart';
 import Checkout from './pages/Checkout/Checkout';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
+import Profile from './pages/Profile/Profile';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
          <Route path="/blog" element={<Blog />} />
           <Route path="/my-orders" element={<MyOrders />} />
+           <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
     </Router>

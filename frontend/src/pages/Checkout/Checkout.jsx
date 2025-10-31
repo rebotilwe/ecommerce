@@ -1,3 +1,4 @@
+// src/pages/Checkout/Checkout.jsx
 import React, { useContext, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import { AuthContext } from "../../context/AuthContext";
@@ -11,12 +12,12 @@ const Checkout = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  // ✅ Safe total calculation
+  // Calculate total safely
   const totalAmount = cartItems.reduce((sum, item) => {
     let price = 0;
     if (Array.isArray(item.price)) {
-      const sizeIndex = item.sizes?.indexOf(item.size) ?? 0;
-      price = item.price[sizeIndex] || 0;
+      const idx = item.sizes?.indexOf(item.size) ?? 0;
+      price = item.price[idx] || 0;
     } else if (typeof item.price === "string") {
       price = parseFloat(item.price.replace("R", "").trim()) || 0;
     } else if (typeof item.price === "number") {
@@ -31,6 +32,11 @@ const Checkout = () => {
       return;
     }
 
+    if (cartItems.length === 0) {
+      setMessage("Your cart is empty.");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch("http://localhost:8085/orders/checkout", {
@@ -39,7 +45,7 @@ const Checkout = () => {
         body: JSON.stringify({
           userId: user.id,
           totalAmount,
-          cartItems,
+          cartItems: JSON.stringify(cartItems), // stringify array for backend
         }),
       });
 
@@ -52,8 +58,8 @@ const Checkout = () => {
         setMessage(`❌ ${data.message}`);
       }
     } catch (err) {
-      setMessage("❌ Error placing order.");
       console.error(err);
+      setMessage("❌ Error placing order.");
     } finally {
       setLoading(false);
     }
