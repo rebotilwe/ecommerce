@@ -1,9 +1,9 @@
 // src/pages/Products/Products.jsx
 import React, { useState, useContext } from "react";
-import "./Products.css";
-import { products } from "../../Data/productsData";
+import { products } from "../../data/productsData";
 import { CartContext } from "../../context/CartContext";
 import { AuthContext } from "../../context/AuthContext";
+import "./Products.css";
 
 const categories = [
   "All",
@@ -17,7 +17,7 @@ const categories = [
 
 const Products = () => {
   const { addToCart } = useContext(CartContext);
-  const { isLoggedIn } = useContext(AuthContext); // 🔹 AuthContext
+  const { isLoggedIn } = useContext(AuthContext);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSizes, setSelectedSizes] = useState({});
 
@@ -26,11 +26,17 @@ const Products = () => {
       ? products
       : products.filter((p) => p.category === selectedCategory);
 
-  const handleAddToCart = (product) => {
-    if (!isLoggedIn) return alert("You must log in to add items to cart.");
-    const size = selectedSizes[product.id] || product.sizes[0];
-    addToCart({ ...product, size });
-  };
+
+      const getPrice = (product, size) => {
+  const idx = product.sizes.indexOf(size);
+  return idx >= 0 ? product.price[idx] : product.price[0];
+};
+
+const handleAddToCart = (product) => {
+  const size = selectedSizes[product.id] || product.sizes[0];
+  const price = getPrice(product, size);
+  addToCart({ ...product, size, price });
+};
 
   return (
     <div className="products-page">

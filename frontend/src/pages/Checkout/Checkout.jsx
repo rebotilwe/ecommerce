@@ -1,97 +1,88 @@
 // src/pages/Checkout/Checkout.jsx
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import "./Checkout.css";
+import toast from "react-hot-toast";
 
 const Checkout = () => {
   const { cartItems, clearCart } = useContext(CartContext);
   const { user } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  // Calculate total safely
-  const totalAmount = cartItems.reduce((sum, item) => {
-    let price = 0;
+  if (!user) {
+    toast.error("You must log in to checkout!");
+    navigate("/login");
+    return null;
+  }
+
+  // Helper to get price of each item
+  const getPrice = (item) => {
     if (Array.isArray(item.price)) {
       const idx = item.sizes?.indexOf(item.size) ?? 0;
-      price = item.price[idx] || 0;
-    } else if (typeof item.price === "string") {
-      price = parseFloat(item.price.replace("R", "").trim()) || 0;
+      return item.price[idx] || 0;
     } else if (typeof item.price === "number") {
-      price = item.price;
+      return item.price;
+    } else if (typeof item.price === "string") {
+      return parseFloat(item.price.replace("R", "")) || 0;
     }
-    return sum + price * (item.quantity || 1);
-  }, 0);
+    return 0;
+  };
 
-  const handleCheckout = async () => {
-    if (!user) {
-      setMessage("You must be logged in to checkout.");
+  // Calculate total in ZAR
+  const totalZAR = cartItems.reduce(
+    (sum, item) => sum + getPrice(item) * (item.quantity || 1),
+    0
+  );
+
+  // Paystack expects smallest currency unit (cents)
+  const amountCents = totalZAR * 100;
+
+  const handleCheckout = () => {
+    if (!window.PaystackPop) {
+      toast.error("Payment system not loaded. Try again later.");
       return;
     }
 
-    if (cartItems.length === 0) {
-      setMessage("Your cart is empty.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const res = await fetch("http://localhost:8085/orders/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: user.id,
-          totalAmount,
-          cartItems: JSON.stringify(cartItems), // stringify array for backend
-        }),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setMessage("✅ Order placed successfully!");
+    const handler = window.PaystackPop.setup({
+      key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
+      email: user.email,
+      amount: amountCents,
+      currency: "ZAR", // match your account currency
+      callback: function (response) {
+        console.log("Payment complete!", response);
+        toast.success("Payment successful!");
         clearCart();
-        setTimeout(() => navigate("/products"), 2000);
-      } else {
-        setMessage(`❌ ${data.message}`);
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("❌ Error placing order.");
-    } finally {
-      setLoading(false);
-    }
+        navigate("/success");
+      },
+      onClose: function () {
+        toast.error("Payment was closed.");
+      },
+    });
+
+    handler.openIframe();
   };
 
   return (
     <div className="checkout-page">
       <div className="container">
         <h1>Checkout</h1>
-
         {cartItems.length === 0 ? (
           <p>Your cart is empty.</p>
         ) : (
           <>
-            <ul className="checkout-items">
+            <ul>
               {cartItems.map((item, idx) => (
                 <li key={idx}>
-                  {item.name} ({item.size}) x {item.quantity}
+                  {item.name} ({item.size || "default"}) x {item.quantity} - R
+                  {(getPrice(item) * item.quantity).toFixed(2)}
                 </li>
               ))}
             </ul>
-            <h3>Total: R{totalAmount.toFixed(2)}</h3>
-
-            <button
-              className="btn btn-success"
-              onClick={handleCheckout}
-              disabled={loading || cartItems.length === 0 || !user}
-            >
-              {loading ? "Processing..." : "Pay Now"}
+            <h3>Total: R{totalZAR.toFixed(2)}</h3>
+            <button className="btn btn-primary" onClick={handleCheckout}>
+              Pay Now
             </button>
-
-            {message && <p className="checkout-message">{message}</p>}
           </>
         )}
       </div>

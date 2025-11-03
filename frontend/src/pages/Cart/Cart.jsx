@@ -3,8 +3,8 @@ import React, { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import { AuthContext } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import "./Cart.css";
 import toast from "react-hot-toast";
+import "./Cart.css";
 
 const Cart = () => {
   const { cartItems, removeFromCart } = useContext(CartContext);
@@ -24,11 +24,10 @@ const Cart = () => {
     );
   }
 
-  // Helper function to calculate price
   const getPrice = (item) => {
     if (Array.isArray(item.price)) {
       const idx = item.sizes?.indexOf(item.size) ?? 0;
-      return item.price[idx] ?? 0;
+      return item.price[idx] || 0;
     } else if (typeof item.price === "number") {
       return item.price;
     } else if (typeof item.price === "string") {
@@ -37,7 +36,7 @@ const Cart = () => {
     return 0;
   };
 
-  const totalPrice = cartItems.reduce(
+  const totalAmount = cartItems.reduce(
     (sum, item) => sum + getPrice(item) * (item.quantity || 1),
     0
   );
@@ -76,7 +75,6 @@ const Cart = () => {
                 {cartItems.map((item, idx) => {
                   const price = getPrice(item);
                   const subtotal = price * item.quantity;
-
                   return (
                     <tr key={idx}>
                       <td className="cart-product">
@@ -96,7 +94,7 @@ const Cart = () => {
                       <td>
                         <button
                           className="remove-btn"
-                          onClick={() => removeFromCart(item.productId, item.size)}
+                          onClick={() => removeFromCart(item.product_id, item.size)}
                         >
                           ✖
                         </button>
@@ -108,7 +106,7 @@ const Cart = () => {
             </table>
 
             <div className="cart-footer">
-              <h3 className="cart-total">Total: R{totalPrice.toFixed(2)}</h3>
+              <h3 className="cart-total">Total: R{totalAmount.toFixed(2)}</h3>
               <button className="checkout-btn" onClick={handleCheckout}>
                 Pay Now
               </button>
