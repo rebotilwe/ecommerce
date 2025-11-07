@@ -3,21 +3,23 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 
 // SIGN UP
+// backend/controllers/authController.js
 exports.signup = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body; // include role if needed
 
   if (!name || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert into DB
+    // Use the role provided or default to 'customer'
+    const userRole = role || "customer";
+
     db.query(
-      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-      [name, email, hashedPassword],
+      "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+      [name, email, hashedPassword, userRole],
       (err, result) => {
         if (err) {
           if (err.code === "ER_DUP_ENTRY") {
@@ -33,27 +35,33 @@ exports.signup = async (req, res) => {
   }
 };
 
+
+// LOGIN
 // LOGIN
 exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) return res.status(400).json({ message: "All fields are required" });
+  if (!email || !password)
+    return res.status(400).json({ message: "All fields are required" });
 
-  db.query(
-    "SELECT * FROM users WHERE email = ?",
-    [email],
-    async (err, results) => {
-      if (err) return res.status(500).json({ message: err.message });
+  db.query("SELECT * FROM users WHERE email = ?", [email], async (err, results) => {
+    if (err) return res.status(500).json({ message: err.message });
+    if (results.length === 0) return res.status(400).json({ message: "User not found" });
 
-      if (results.length === 0) return res.status(400).json({ message: "User not found" });
+    const user = results[0];
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(400).json({ message: "Incorrect password" });
 
-      const user = results[0];
-
-      // Compare password
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) return res.status(400).json({ message: "Incorrect password" });
-
-      res.json({ message: "Login successful", user: { id: user.id, name: user.name, email: user.email } });
-    }
-  );
+    // include role
+    res.json({
+      message: "Login successful",
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role, // 👈 important
+      },
+    });
+  });
 };
+

@@ -1,12 +1,17 @@
 // src/components/Auth/LoginSignUpPopup.jsx
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./LoginSignUpPopup.css";
 import crossIcon from "../../assets/images/cross_icon.png";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-const LoginSignUpPopup = ({ show, onClose, setUser }) => {
-  const [mode, setMode] = useState("Login"); // "Login" or "Sign Up"
+const LoginSignUpPopup = ({ show, onClose }) => {
+  const [mode, setMode] = useState("Login");
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [agreeTerms, setAgreeTerms] = useState(false);
+
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   if (!show) return null;
 
@@ -22,24 +27,31 @@ const LoginSignUpPopup = ({ show, onClose, setUser }) => {
       return;
     }
 
-    const url = mode === "Login"
-      ? "http://localhost:8085/login"
-      : "http://localhost:8085/signup";
+    const url =
+      mode === "Login"
+        ? "http://localhost:8085/login"
+        : "http://localhost:8085/signup";
 
     try {
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Something went wrong");
 
-      // Set the logged-in user in the parent (Navbar)
       if (mode === "Login") {
-        setUser(data.user); // user = {id, name, email}
+        login(data.user); // save user globally
         alert(`Welcome back, ${data.user.name}!`);
+
+        // ✅ Redirect based on role
+        if (data.user.role === "admin") {
+          navigate("/dashboard");
+        } else {
+          navigate("/");
+        }
       } else {
         alert("Sign Up successful! You can now log in.");
         setMode("Login");

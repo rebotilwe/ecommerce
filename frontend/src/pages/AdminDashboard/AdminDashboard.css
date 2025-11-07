@@ -1,0 +1,250 @@
+/* General styles */
+.admin-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #2e3a59;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 260px;
+  background-color: #1f2937;
+  color: #e0e7ff;
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.12);
+}
+
+.admin-logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  margin-bottom: 50px;
+  text-align: center;
+  color: #6366f1;
+  user-select: none;
+}
+
+.admin-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-nav li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  color: #cbd5e1;
+}
+
+.admin-nav li:hover,
+.admin-nav li:focus {
+  background-color: #4f46e5;
+  color: #f9fafb;
+  outline: none;
+}
+
+.admin-nav li svg {
+  font-size: 20px;
+  color: inherit;
+  transition: color 0.25s ease;
+}
+
+.logout-btn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 14px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.logout-btn:hover {
+  background-color: #dc2626;
+}
+
+/* Main content */
+.admin-main {
+  flex: 1;
+  padding: 40px 60px;
+  background-color: #f9fafb;
+  overflow-y: auto;
+}
+
+/* Header */
+.admin-header h1 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.admin-header p {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+/* Dashboard cards */
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 28px;
+  margin-bottom: 45px;
+}
+
+.admin-card {
+  background-color: white;
+  border-radius: 15px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(99, 102, 241, 0.35);
+}
+
+.admin-card .icon {
+  font-size: 36px;
+  color: #6366f1;
+  margin-bottom: 15px;
+}
+
+.admin-card h3 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 8px 0;
+  color: #111827;
+}
+
+.admin-card p {
+  font-size: 18px;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Recent activity section */
+.admin-section {
+  background: white;
+  padding: 30px 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.admin-section h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #111827;
+}
+
+.admin-section p {
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .admin-main {
+    padding: 30px 30px;
+  }
+
+  .admin-cards {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-dashboard {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 15px 10px;
+    box-shadow: none;
+  }
+
+  .admin-logo {
+    display: none;
+  }
+
+  .admin-nav ul {
+    display: flex;
+    gap: 18px;
+  }
+
+  .admin-nav li {
+    padding: 8px 12px;
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+
+  .logout-btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+.admin-graph {
+margin-top: 40px;
+background: #fff;
+border-radius: 16px;
+padding: 30px;
+box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.admin-graph h2 {
+font-size: 24px;
+font-weight: 700;
+color: #1f2937;
+margin-bottom: 24px;
+}
+
+.chart-container {
+width: 100%;
+height: 320px; 
+}
+
+.admin-cards {
+margin-bottom: 48px; 
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+.admin-graph {
+padding: 20px 20px;
+}
+
+.chart-container {
+height: 280px;
+}
+}

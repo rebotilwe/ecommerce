@@ -7,7 +7,8 @@ import toast from "react-hot-toast";
 import "./Cart.css";
 
 const Cart = () => {
-  const { cartItems, removeFromCart } = useContext(CartContext);
+const { cartItems, addToCart, removeFromCart, clearCart, updateQuantity } = useContext(CartContext);
+
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -49,6 +50,21 @@ const Cart = () => {
     navigate("/checkout");
   };
 
+const increaseQuantity = (item) => {
+  updateQuantity(item.productId, item.size, item.quantity + 1);
+};
+
+const decreaseQuantity = (item) => {
+  if (item.quantity > 1) {
+    updateQuantity(item.productId, item.size, item.quantity - 1);
+  } else {
+    // If quantity is 1, remove item completely
+    removeFromCart(item.productId, item.size);
+  }
+};
+
+
+
   return (
     <div className="cart-page">
       <div className="container">
@@ -76,7 +92,8 @@ const Cart = () => {
                   const price = getPrice(item);
                   const subtotal = price * item.quantity;
                   return (
-                    <tr key={idx}>
+                 <tr key={item.productId + "-" + item.size}>
+
                       <td className="cart-product">
                         {item.image && (
                           <img
@@ -89,15 +106,21 @@ const Cart = () => {
                       </td>
                       <td>{item.size || "default"}</td>
                       <td>R{price.toFixed(2)}</td>
-                      <td>{item.quantity}</td>
+                      <td>
+                        <div className="quantity-controls">
+                          <button onClick={() => decreaseQuantity(item)}>-</button>
+                          <span>{item.quantity}</span>
+                          <button onClick={() => increaseQuantity(item)}>+</button>
+                        </div>
+                      </td>
                       <td>R{subtotal.toFixed(2)}</td>
                       <td>
-                        <button
-                          className="remove-btn"
-                          onClick={() => removeFromCart(item.product_id, item.size)}
-                        >
-                          ✖
-                        </button>
+<button className="remove-btn" onClick={() => removeFromCart(item.productId, item.size)}>
+
+
+  ✖
+</button>
+
                       </td>
                     </tr>
                   );

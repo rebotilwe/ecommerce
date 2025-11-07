@@ -2,7 +2,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "./AuthContext.jsx";
-import { products } from "../data/productsData.js"; // Import products for price lookup
 
 export const CartContext = createContext();
 
@@ -11,6 +10,7 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const API_URL = "http://localhost:8085/cart";
 
+  // Fetch cart when user changes
   useEffect(() => {
     if (user?.id) fetchCartItems(user.id);
     else setCartItems([]);
@@ -19,49 +19,47 @@ export const CartProvider = ({ children }) => {
   const fetchCartItems = async (userId) => {
     try {
       const res = await axios.get(`${API_URL}/${userId}`);
-      // Merge product info (name, image, sizes, price) from productsData
-      const mergedCart = res.data.map((item) => {
-        const prod = products.find((p) => p.id === item.product_id);
-        return {
-          ...item,
-          name: prod?.name || "Unknown",
-          image: prod?.image || "",
-          sizes: prod?.sizes || [],
-          price: prod?.price || [0],
-        };
-      });
-      setCartItems(mergedCart);
+      setCartItems(res.data);
     } catch (err) {
       console.error("Error fetching cart:", err);
     }
   };
-const addToCart = async ({ id: productId, size, price }) => {
+
+const addToCart = async ({ productId, id, name, size, price, image, quantity = 1 }) => {
   if (!user) return alert("You must log in to add items to cart.");
+
+  // Fix id/productId mapping if needed
+  const idToUse = productId || id;
+  if (!idToUse) {
+    console.error("Missing productId or id in addToCart payload");
+    return;
+  }
 
   const safeSize = size && size.trim() !== "" ? size : "default";
 
   const payload = {
     userId: user.id,
-    productId,
+    productId: idToUse,
+    name,
     size: safeSize,
-    quantity: 1,
-    price, // ✅ add price here
+    quantity,
+    price,
+    image,
   };
 
   console.log("Adding to cart payload:", payload);
 
   try {
-    const res = await axios.post(`${API_URL}/add`, payload);
-    console.log("✅ Added to cart response:", res.data);
+    await axios.post(`${API_URL}/add`, payload);
 
     setCartItems((prev) => {
       const existing = prev.find(
-        (item) => item.productId === productId && item.size === safeSize
+        (item) => item.productId === idToUse && item.size === safeSize
       );
       if (existing) {
         return prev.map((item) =>
-          item.productId === productId && item.size === safeSize
-            ? { ...item, quantity: item.quantity + 1 }
+          item.productId === idToUse && item.size === safeSize
+            ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       } else {
@@ -69,34 +67,40 @@ const addToCart = async ({ id: productId, size, price }) => {
       }
     });
   } catch (err) {
-    if (err.response) {
-      console.error("❌ Backend error adding to cart:", err.response.data);
-    } else {
-      console.error("❌ Axios error adding to cart:", err);
-    }
+    console.error("Error adding to cart:", err);
+  }
+};
+
+const removeFromCart = async (productId, size) => {
+  if (!user) return;
+
+  const safeSize = size && size.trim() !== "" ? size : "default";
+
+  console.log("Removing from cart payload:", {
+    userId: user.id,
+    productId,
+    size: safeSize,
+  });
+
+  try {
+    await axios.delete(`${API_URL}/remove`, {
+      data: { userId: user.id, productId, size: safeSize },
+    });
+    setCartItems((prev) =>
+      prev.filter(
+        (item) => !(item.productId === productId && item.size === safeSize)
+      )
+    );
+  } catch (err) {
+    console.error("Error removing from cart:", err);
   }
 };
 
 
 
-
-
-  const removeFromCart = async (productId, size) => {
-    try {
-      await axios.delete(`${API_URL}/remove`, {
-        data: { userId: user.id, productId, size },
-      });
-      setCartItems((prev) =>
-        prev.filter(
-          (item) => !(item.product_id === productId && item.size === size)
-        )
-      );
-    } catch (err) {
-      console.error("Error removing from cart:", err);
-    }
-  };
-
+  // Clear entire cart
   const clearCart = async () => {
+    if (!user) return;
     try {
       await axios.delete(`${API_URL}/clear/${user.id}`);
       setCartItems([]);
@@ -104,14 +108,34 @@ const addToCart = async ({ id: productId, size, price }) => {
       console.error("Error clearing cart:", err);
     }
   };
+  const updateQuantity = async (productId, size, newQuantity) => {
+  if (!user) return;
+  const safeSize = size && size.trim() !== "" ? size : "default";
+  try {
+    await axios.put(`${API_URL}/update-quantity`, {
+      userId: user.id,
+      productId,
+      size: safeSize,
+      quantity: newQuantity,
+    });
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.productId === productId && item.size === safeSize
+          ? { ...item, quantity: newQuantity }
+          : item
+      )
+    );
+  } catch (err) {
+    console.error("Error updating quantity:", err);
+  }
+};
 
+  // Total items in cart
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, clearCart, totalItems }}
-    >
-      {children}
-    </CartContext.Provider>
+     <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart, updateQuantity, totalItems }}>
+    {children}
+  </CartContext.Provider>
   );
 };

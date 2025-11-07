@@ -51,6 +51,21 @@ exports.addToCart = (req, res) => {
     }
   );
 };
+exports.updateQuantity = (req, res) => {
+  const { userId, productId, size, quantity } = req.body;
+  if (!userId || !productId || !quantity) {
+    return res.status(400).json({ message: "Missing fields" });
+  }
+  const safeSize = size && size.trim() !== "" ? size : "default";
+  db.query(
+    "UPDATE cart_items SET quantity = ? WHERE user_id = ? AND product_id = ? AND size = ?",
+    [quantity, userId, productId, safeSize],
+    (err) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: "Quantity updated" });
+    }
+  );
+};
 
 
 // ✅ Remove item

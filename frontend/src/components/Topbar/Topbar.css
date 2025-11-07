@@ -1,8 +1,10 @@
-/* TopBar container */
+/* ----------------------------- */
+/* 🌊 TOPBAR SECTION STYLING     */
+/* ----------------------------- */
 .top-bar {
   width: 100%;
-  background-color: #004d66; /* dark teal for water vibe */
-  color: #b3e0ff; /* soft light blue text */
+  background-color: #004d66;
+  color: #b3e0ff;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 14px;
   padding: 6px 0;
@@ -12,7 +14,6 @@
   z-index: 15;
 }
 
-/* Container inside TopBar */
 .top-bar .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -20,87 +21,76 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap; /* wrap on smaller screens */
 }
 
 /* Left side - phone and email alignment */
-.top-bar .left-items {
+.left-items {
   display: flex;
   align-items: center;
-  gap: 25px; /* more space between phone and email */
+  gap: 25px;
+  flex-wrap: wrap;
 }
 
-/* Icons with text */
-.top-bar svg {
-  margin-right: 6px;
-  color: #76c7ff;
-  font-size: 16px;
-}
-
-/* Right side - social icons and Sign In button */
-.top-bar .right-items {
+.left-items .phone-email {
   display: flex;
   align-items: center;
-  gap: 15px; /* space between icons */
+  gap: 6px;
 }
 
-/* Social icons style */
-.top-bar .right-items a {
+.left-items .phone-email .text {
+  display: inline;
+}
+
+/* Right side - social icons + auth links */
+.right-items {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.right-items a, .right-items .auth-link {
   color: #b3e0ff;
   font-size: 16px;
   transition: color 0.3s ease;
+  text-decoration: none;
 }
 
-.top-bar .right-items a:hover {
-  color: #ffffff;
+.right-items a:hover, .right-items .auth-link:hover {
+  color: #fff;
 }
 
-/* Sign In button styling */
-.top-bar .right-items .auth-link {
-  padding: 6px 16px; /* smaller and cleaner */
-  margin-left: 8px; /* separates it from the last icon */
+.auth-link {
+  padding: 6px 16px;
   border-radius: 30px;
   background: linear-gradient(90deg, #00afd1 0%, #007ba7 100%);
-  color: #fff;
   font-weight: 600;
-  border: none;
-  cursor: pointer;
   font-size: 14px;
   letter-spacing: 0.5px;
   box-shadow: 0 4px 10px rgba(0, 175, 209, 0.4);
   transition: all 0.3s ease;
-  text-decoration: none;
 }
 
-.top-bar .right-items .auth-link:hover {
-  background: linear-gradient(90deg, #007ba7 0%, #00afd1 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 123, 167, 0.5);
-  color: #e0f7fa;
-  text-decoration: none;
+/* ----------------------------- */
+/* 📱 RESPONSIVE STYLES          */
+/* ----------------------------- */
+@media (max-width: 992px) {
+  .top-bar .container { padding: 0 20px; }
+  .left-items { gap: 15px; }
+  .right-items { gap: 12px; }
+  .auth-link { padding: 5px 14px; font-size: 13px; }
+  .left-items .phone-email .text { font-size: 13px; }
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
-  .top-bar {
-    font-size: 13px;
-    padding: 4px 0;
-  }
+  .left-items .phone-email .text { display: none; } /* hide phone/email text */
+  .right-items .auth-link { padding: 4px 10px; font-size: 12px; }
+  .top-bar { padding: 4px 0; }
+  .right-items a { font-size: 14px; }
+}
 
-  .top-bar .container {
-    padding: 0 15px;
-  }
-
-  .top-bar .left-items,
-  .top-bar .right-items {
-    gap: 10px;
-  }
-
-  .top-bar svg {
-    font-size: 14px;
-  }
-
-  .top-bar .right-items .auth-link {
-    padding: 5px 12px;
-    font-size: 13px;
-  }
+@media (max-width: 576px) {
+  .right-items { gap: 8px; }
+  .auth-link { font-size: 11px; padding: 3px 8px; }
 }

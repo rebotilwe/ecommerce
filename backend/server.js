@@ -8,6 +8,7 @@ const cartRoutes = require("./routes/cartRoutes");
 const contactRoutes = require("./routes/contact");
 const profileRoutes = require("./routes/profile");
 const paystackRoutes = require("./routes/paystackRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 const app = express();
 
 app.use(cors());
@@ -16,11 +17,15 @@ app.use(bodyParser.json());
 // Middleware to serve static uploads
 app.use("/uploads", express.static("uploads"));
 
+
 app.use("/", authRoutes);
 app.use("/cart", cartRoutes)
 app.use("/orders", orderRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/users", profileRoutes);
 app.use("/api/paystack", paystackRoutes);
+app.use("/api/admin", adminRoutes);
+
+
 const PORT = 8085;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

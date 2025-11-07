@@ -1,0 +1,121 @@
+.orders-list {
+max-width: 1000px;
+margin: 2rem auto;
+background-color: #ffffff;
+border-radius: 14px;
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+padding: 2rem 3rem;
+font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+color: #333333;
+}
+
+.orders-list h2 {
+font-weight: 700;
+font-size: 2rem;
+margin-bottom: 1.5rem;
+color: #1e40af;
+}
+
+.orders-list table {
+width: 100%;
+border-collapse: separate;
+border-spacing: 0 1rem;
+}
+
+.orders-list thead tr {
+background-color: #f3f4f6;
+border-radius: 12px;
+}
+
+.orders-list th {
+text-align: left;
+font-weight: 600;
+padding: 1rem 1.5rem;
+color: #64748b;
+font-size: 1rem;
+}
+
+.orders-list tbody tr {
+background-color: #f9fafb;
+border-radius: 10px;
+transition: background-color 0.3s ease;
+cursor: default;
+}
+
+.orders-list tbody tr:hover {
+background-color: #e0e7ff;
+}
+
+.orders-list td {
+padding: 1rem 1.5rem;
+font-size: 1rem;
+color: #4b5563;
+}
+
+.orders-list td:first-child {
+font-weight: 700;
+color: #1e40af;
+}
+
+.orders-list td:nth-child(4) {
+/* status column: style depending on status */
+font-weight: 600;
+text-transform: capitalize;
+color: #2563eb;
+}
+
+/* Responsive styles */
+
+@media (max-width: 768px) {
+.orders-list {
+padding: 1rem 1rem;
+}
+
+.orders-list table,
+.orders-list thead,
+.orders-list tbody,
+.orders-list th,
+.orders-list td,
+.orders-list tr {
+display: block;
+}
+
+.orders-list thead {
+border: none;
+clip: rect(0 0 0 0);
+height: 1px;
+overflow: hidden;
+padding: 0;
+position: absolute;
+width: 1px;
+}
+
+.orders-list tbody tr {
+margin-bottom: 1rem;
+background-color: #ffffff;
+box-shadow: 0 5px 12px rgba(0, 0, 0, 0.06);
+border-radius: 12px;
+padding: 1rem;
+}
+
+.orders-list tbody tr td {
+padding-left: 50%;
+position: relative;
+text-align: left;
+font-size: 0.9rem;
+color: #374151;
+}
+
+.orders-list tbody tr td::before {
+content: attr(data-label);
+position: absolute;
+left: 1rem;
+top: 50%;
+transform: translateY(-50%);
+font-weight: 700;
+color: #6b7280;
+white-space: nowrap;
+}
+}
+
+/*
